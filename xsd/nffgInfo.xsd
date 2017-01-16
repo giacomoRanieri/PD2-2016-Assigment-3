@@ -1,0 +1,167 @@
+﻿<?xml version="1.1" encoding="utf-8" ?>
+<xs:schema xmlns:ni="http://www.example.org/nffgInfo" elementFormDefault="qualified" targetNamespace="http://www.example.org/nffgInfo" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="nffgVerifier" type="ni:nffgVerifierType">
+		<xs:unique name="nffgId">
+			<xs:selector xpath="ni:nffgs/ni:nffg"/>
+			<xs:field xpath="@name"/>
+		</xs:unique>
+		<!--<xs:unique name="policyUniqueName">
+			<xs:selector xpath="./ni:nffgs/ni:nffg/ni:policies"/>
+			<xs:field xpath="ni:traversalPolicy/@name"/>
+			<xs:field xpath="ni:reachabilityPolicy/@name"/>
+		</xs:unique>-->
+	</xs:element>
+	<xs:complexType name="nffgVerifierType">
+		<xs:sequence>
+			<xs:element name="nffgs">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="nffg" type="ni:nffgType" minOccurs="0" maxOccurs="unbounded">
+							<xs:key name="nodeId">
+								<xs:selector xpath="ni:nodes/ni:node"/>
+								<xs:field xpath="@name"/>
+							</xs:key>
+							<xs:keyref name="linkDestinationNode" refer="ni:nodeId">
+								<xs:selector xpath="ni:nodes/ni:node/ni:links/ni:link/ni:destinationNode"/>
+								<xs:field xpath="@name"/>
+							</xs:keyref>
+							<xs:keyref name="reachabilitySource" refer="ni:nodeId">
+								<xs:selector xpath="ni:policies/ni:reachabilityPolicy/ni:sourceNode"/>
+								<xs:field xpath="@name"/>
+							</xs:keyref>
+							<xs:keyref name="reachabilityDestination" refer="ni:nodeId">
+								<xs:selector xpath="ni:policies/ni:reachabilityPolicy/ni:destinationNode"/>
+								<xs:field xpath="@name"/>
+							</xs:keyref>
+							<xs:keyref name="traversalSource" refer="ni:nodeId">
+								<xs:selector xpath="ni:policies/ni:traversalPolicy/ni:sourceNode"/>
+								<xs:field xpath="@name"/>
+							</xs:keyref>
+							<xs:keyref name="traversalDestination" refer="ni:nodeId">
+								<xs:selector xpath="ni:policies/ni:traversalPolicy/ni:destinationNode"/>
+								<xs:field xpath="@name"/>
+							</xs:keyref>
+							<xs:unique name="linkName">
+								<xs:selector xpath="ni:nodes/ni:node/ni:links/ni:link"/>
+								<xs:field xpath="@name"/>
+							</xs:unique>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="nffgType">
+		<xs:complexContent>
+			<xs:extension base="ni:namedEntityType">
+				<xs:sequence>
+					<xs:element name="updateTime" type="xs:dateTime" minOccurs="1"/>
+					<xs:element name="nodes" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="node" type="ni:nodeType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="policies" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="reachabilityPolicy" type="ni:reachabilityPolicyType" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="traversalPolicy" type="ni:traversalPolicyType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="nodeType">
+		<xs:complexContent>
+			<xs:extension base="ni:namedEntityType">
+				<xs:sequence>
+					<xs:element name="funcType" type="ni:functionalTypeType"/>
+					<xs:element name="links">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="link" type="ni:linkType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="linkType">
+		<xs:complexContent>
+			<xs:extension base="ni:namedEntityType">
+				<xs:sequence>
+					<xs:element name="destinationNode" minOccurs="1" type="ni:namedEntityType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="policyType">
+		<xs:complexContent>
+			<xs:extension base="ni:namedEntityType">
+				<xs:sequence>
+					<xs:element name="result" type="ni:verificationResultType" minOccurs="0"/>
+				</xs:sequence>
+				<xs:attribute name="positive" type="xs:boolean" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="reachabilityPolicyType">
+		<xs:complexContent>
+			<xs:extension base="ni:policyType">
+				<xs:sequence>
+					<xs:element name="sourceNode" minOccurs="1" type="ni:namedEntityType"/>
+					<xs:element name="destinationNode" minOccurs="1" type="ni:namedEntityType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="traversalPolicyType">
+		<xs:complexContent>
+			<xs:extension base="ni:reachabilityPolicyType">
+				<xs:sequence>
+					<xs:element name="traversedFunctionalTypes">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="funcType" minOccurs="0" maxOccurs="unbounded" type="ni:functionalTypeType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="verificationResultType">
+		<xs:sequence>
+			<xs:element name="verificationResult" type="xs:boolean"/>
+			<xs:element name="verificationResultMsg" type="xs:string"/>
+			<xs:element name="verificationTime" type="xs:dateTime"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="functionalTypeType" final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FW"/>
+			<xs:enumeration value="DPI"/>
+			<xs:enumeration value="NAT"/>
+			<xs:enumeration value="SPAM"/>
+			<xs:enumeration value="CACHE"/>
+			<xs:enumeration value="VPN"/>
+			<xs:enumeration value="WEB_SERVER"/>
+			<xs:enumeration value="WEB_CLIENT"/>
+			<xs:enumeration value="MAIL_SERVER"/>
+			<xs:enumeration value="MAIL_CLIENT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="nameType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[\w\d-]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="namedEntityType">
+		<xs:attribute name="name" type="ni:nameType" use="required"/>
+	</xs:complexType>
+</xs:schema>

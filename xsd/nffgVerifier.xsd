@@ -1,0 +1,68 @@
+<?xml version="1.1" encoding="utf-8" ?>
+<xs:schema xmlns:ni="http://www.example.org/nffgInfo" xmlns:nv="http://www.example.org/nffgVerifier"
+		   elementFormDefault="qualified" targetNamespace="http://www.example.org/nffgVerifier"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import schemaLocation="nffgInfo.xsd"
+			   namespace="http://www.example.org/nffgInfo"/>
+	<xs:element name="nffg" type="nv:restrictedNffgType"/>
+	<xs:element name="nffgs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="nffg" type="nv:restrictedNffgType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="verificationResult" type="nv:enhancedVerificationResultType"/>
+	<xs:element name="results">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="verificationResult" type="nv:enhancedVerificationResultType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="policy" type="nv:enhancedPolicyType"/>
+	<xs:element name="policies">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="policy" type="nv:enhancedPolicyType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="restrictedNffgType">
+		<xs:complexContent>
+			<xs:extension base="ni:namedEntityType">
+				<xs:sequence>
+					<xs:element name="updateTime" type="xs:dateTime" minOccurs="1"/>
+					<xs:element name="nodes" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="node" type="ni:nodeType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="enhancedVerificationResultType">
+		<xs:complexContent>
+			<xs:extension base="ni:verificationResultType">
+				<xs:attribute type="nv:nameType" name="policy" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="enhancedPolicyType">
+		<xs:complexContent>
+			<xs:extension base="ni:reachabilityPolicyType">
+				<xs:attribute type="nv:nameType" name="nffg" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="nameListType">
+		<xs:list itemType="nv:nameType"/>
+	</xs:simpleType>
+	<xs:simpleType name="nameType" >
+		<xs:restriction base="ni:nameType"/>
+	</xs:simpleType>
+</xs:schema>
