@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jersey-guava-2.7">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jersey-guava-2.7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

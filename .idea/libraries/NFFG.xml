@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="NFFG">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/NFFG.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
