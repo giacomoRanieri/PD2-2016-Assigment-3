@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="sol_build" default="build-service" basedir=".">
+	<description>
+		Script for building NFFG Assignment 3
+	</description>
+	<property name="schema.dir" location="${basedir}/xsd"/>
+	<property name="gen.dir" location="${basedir}/gen-src"/>
+
+	<property name="serviceName" value="NffgService"/>
+	<property name="path.prefix" value="it/polito/dp2/NFFG/sol3/service"/>
+
+	<!-- The location of the ... web service -->
+	<property name="PORT" value="8080"/>
+	<property name="NEO4JURL" value="http://localhost:${PORT}/Neo4JXML/rest"/>
+	<property name="WADL" value="${NEO4JURL}/application.wadl"/>
+
+	<path id="service.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- Target init -->
+	<target name="init">
+		<mkdir dir="${gen.dir}"/>
+	</target>
+
+	<!-- define wjc task (WADL to Java) -->
+	<taskdef name="wjc" classname="org.jvnet.ws.wadl2java.WJCTask">
+		<classpath>
+			<fileset dir="${lib.dir}" includes="*.jar"/>
+		</classpath>
+	</taskdef>
+
+	<!-- Target chk-bindings -->
+	<target name="-chk-bindings">
+		<uptodate property="generate-bindings.notRequired" targetfile="${gen.dir}/.flagfile">
+			<srcfiles dir="${schema.dir}" includes="**/*.xsd"/>
+		</uptodate>
+	</target>
+
+	<!-- Target generate-bindings -->
+	<target name="generate-bindings" unless="generate-bindings.notRequired" depends="init,-chk-bindings"
+			description="Generate bindings from schema">
+		<exec executable="xjc" failonerror="true">
+			<arg value="-d"/>
+			<arg value="${gen.dir}"/>
+			<arg value="-p"/>
+			<arg value="it.polito.dp2.NFFG.sol3.service.jaxb"/>
+			<arg value="${schema.dir}/nffgVerifier.xsd"/>
+		</exec>
+		<touch file="${gen.dir}/.flagfile"/>
+	</target>
+
+	<target name="generate-artifacts" depends="generate-bindings">
+		<echo message="Compiling the descriptions..."/>
+		<wjc description="${WADL}" package="it.polito.dp2.NFFG.sol3.service.jaxrs"
+			 autoSchemaPackage="false" target="${gen.dir}">
+			<customizations dir="${basedir}" includes="binding.xjc"/>
+			<produces dir="${gen.dir}/it/polito/dp2/NFFG/sol3/service/jaxrs" includes="*.java"/>
+			<depends dir="${basedir}" includes="build.xml"/>
+		</wjc>
+	</target>
+
+	<target name="build-service" depends="generate-artifacts">
+		<javac debug="on"
+			   fork="true"
+			   destdir="${build.dir}"
+			   includeantruntime="false"
+			   source="${source}"
+			   target="${target}">
+			<src path="${src.dir}"/>
+			<src path="${gen.dir}"/>
+			<include name="${path.prefix}/**/*.java"/>
+			<classpath>
+				<path refid="service.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+</project>
