@@ -6,18 +6,16 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.PolicyReader;
-import it.polito.dp2.NFFG.lab2.ServiceException;
+import it.polito.dp2.NFFG.lab3.ServiceException;
 import it.polito.dp2.NFFG.sol3.service.NffgsService;
 import it.polito.dp2.NFFG.sol3.service.data.Policy;
 import it.polito.dp2.NFFG.sol3.service.data.ReachabilityPolicy;
 import it.polito.dp2.NFFG.sol3.service.data.VerificationResult;
-import it.polito.dp2.NFFG.sol3.service.jaxb.*;
-import scala.util.parsing.combinator.testing.Str;
+import it.polito.dp2.NFFG.sol3.jaxb.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBElement;
-import javax.xml.transform.Result;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -78,6 +76,8 @@ public class PoliciesResource {
 	@ApiOperation(value = "Update a policy", notes = "xml format")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 404, message = "Not Found"),
 			@ApiResponse(code = 500, message = "Internal Server Error")})
 	@Consumes({MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_XML})
@@ -105,6 +105,7 @@ public class PoliciesResource {
 	@ApiOperation(value = "Retrieve a policy", notes = "xml format")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 404, message = "Not Found"),
 			@ApiResponse(code = 500, message = "Internal Server Error")})
 	@Produces({MediaType.APPLICATION_XML})
 	public JAXBElement<EnhancedPolicyType> getPolicy(@PathParam("name") String policyName) {
@@ -121,6 +122,7 @@ public class PoliciesResource {
 	@ApiOperation(value = "Delete a policy", notes = "xml format")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 404, message = "Not Found"),
 			@ApiResponse(code = 500, message = "Internal Server Error")})
 	@Produces({MediaType.APPLICATION_XML})
 	public JAXBElement<EnhancedPolicyType> deletePolicy(@PathParam("name") String policyName) {
@@ -141,6 +143,8 @@ public class PoliciesResource {
 	@ApiOperation(value = "Request verification of one or more policy", notes = "xml format")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 400, message = "Bad Request"),
+			@ApiResponse(code = 404, message = "Not Found"),
 			@ApiResponse(code = 500, message = "Internal Server Error")})
 	@Produces({MediaType.APPLICATION_XML})
 	public Results verifyPolicies(@PathParam("name") String policyName, @QueryParam("names") List<String> otherPolicies) {
@@ -160,20 +164,27 @@ public class PoliciesResource {
 					throw new InternalServerErrorException("Unable to verify the policy");
 				}
 				service.updateVerificationResult(result, (Policy) pol);
-				reslist.add(result.toSoloXMLObject());
+				reslist.add(result.toXMLObject());
 			}
 		}
 		return res;
 	}
 
-	@Path("{name}/VerificationResult")
+	@Path("{name}/verificationResult")
 	@GET
 	@ApiOperation(value = "Retrieve verification result of one policy", notes = "xml format")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
+			@ApiResponse(code = 404, message = "Not Found"),
 			@ApiResponse(code = 500, message = "Internal Server Error")})
 	@Produces({MediaType.APPLICATION_XML})
 	public JAXBElement<EnhancedVerificationResultType> getVerificationResult(@PathParam("name") String policyName) {
-		return null;
+		PolicyReader pol = service.getPolicy(policyName);
+		if (pol == null)
+			throw new NotFoundException("Policy not found");
+		VerificationResult res = (VerificationResult) pol.getResult();
+		if (res == null)
+			return null;
+		return factory.createVerificationResult(res.toXMLObject());
 	}
 }

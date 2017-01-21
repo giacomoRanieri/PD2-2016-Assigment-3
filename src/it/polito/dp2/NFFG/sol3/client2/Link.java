@@ -1,11 +1,8 @@
-package it.polito.dp2.NFFG.sol3.service.data;
+package it.polito.dp2.NFFG.sol3.client2;
 
 import it.polito.dp2.NFFG.LinkReader;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.NodeReader;
-import it.polito.dp2.NFFG.sol3.jaxb.LinkType;
-import it.polito.dp2.NFFG.sol3.jaxb.NamedEntityType;
-import it.polito.dp2.NFFG.sol3.jaxb.ObjectFactory;
 
 /**
  * Created by giacomo on 17/01/2017.
@@ -61,13 +58,4 @@ public class Link extends NamedEntity implements LinkReader {
 		return 3 * super.hashCode();
 	}
 
-	public LinkType toXMLObject() {
-		ObjectFactory factory = new ObjectFactory();
-		LinkType link = factory.createLinkType();
-		link.setName(this.getName());
-		NamedEntityType destNode = factory.createNodeType();
-		destNode.setName(this.destination.getName());
-		link.setDestinationNode(destNode);
-		return link;
-	}
 }

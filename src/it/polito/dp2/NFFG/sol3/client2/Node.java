@@ -1,13 +1,12 @@
-package it.polito.dp2.NFFG.sol3.service.data;
+package it.polito.dp2.NFFG.sol3.client2;
 
 import it.polito.dp2.NFFG.FunctionalType;
 import it.polito.dp2.NFFG.LinkReader;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.NodeReader;
-import it.polito.dp2.NFFG.sol3.jaxb.*;
+import it.polito.dp2.NFFG.sol3.jaxb.NodeType;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -20,14 +19,14 @@ public class Node extends NamedEntity implements NodeReader {
 	private Set<LinkReader> links;
 
 	public Node(NodeType newNode) throws NffgVerifierException {
-		super(newNode == null?null:newNode.getName());
+		super(newNode == null ? null : newNode.getName());
 		this.type = FunctionalType.valueOf(newNode.getFuncType().name());
 		this.links = new CopyOnWriteArraySet<>();
 	}
 
 	public Node(String name, FunctionalType type) throws NffgVerifierException {
 		super(name);
-		if(type == null)
+		if (type == null)
 			throw new NffgVerifierException("FunctionalType is null");
 		this.type = type;
 		links = new HashSet<>();
@@ -44,7 +43,7 @@ public class Node extends NamedEntity implements NodeReader {
 	}
 
 	public void setFunkType(FunctionalType type) {
-		if(type == null)
+		if (type == null)
 			throw new NullPointerException("Type is null");
 		this.type = type;
 	}
@@ -98,17 +97,4 @@ public class Node extends NamedEntity implements NodeReader {
 		return 5 * super.hashCode();
 	}
 
-	public NodeType toXMLObject() {
-		ObjectFactory factory = new ObjectFactory();
-		NodeType node = factory.createNodeType();
-		node.setName(this.getName());
-		node.setFuncType(FunctionalTypeType.valueOf(this.getFuncType().name()));
-		NodeType.Links links = factory.createNodeTypeLinks();
-		List<LinkType> linkList = links.getLink();
-		for (LinkReader link : this.links) {
-			linkList.add(((Link) link).toXMLObject());
-		}
-		node.setLinks(links);
-		return node;
-	}
 }

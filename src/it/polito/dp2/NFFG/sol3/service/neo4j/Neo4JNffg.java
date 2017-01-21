@@ -1,7 +1,7 @@
 package it.polito.dp2.NFFG.sol3.service.neo4j;
 
 import it.polito.dp2.NFFG.*;
-import it.polito.dp2.NFFG.lab2.ServiceException;
+import it.polito.dp2.NFFG.lab3.ServiceException;
 import it.polito.dp2.NFFG.sol3.service.data.ReachabilityPolicy;
 import it.polito.dp2.NFFG.sol3.service.data.VerificationResult;
 import it.polito.dp2.NFFG.sol3.service.jaxrs.*;

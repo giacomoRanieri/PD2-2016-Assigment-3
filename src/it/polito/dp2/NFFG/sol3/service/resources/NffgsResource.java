@@ -7,11 +7,11 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import it.polito.dp2.NFFG.NffgReader;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.PolicyReader;
-import it.polito.dp2.NFFG.lab2.ServiceException;
+import it.polito.dp2.NFFG.lab3.ServiceException;
 import it.polito.dp2.NFFG.sol3.service.NffgsService;
 import it.polito.dp2.NFFG.sol3.service.data.Nffg;
 import it.polito.dp2.NFFG.sol3.service.data.ReachabilityPolicy;
-import it.polito.dp2.NFFG.sol3.service.jaxb.*;
+import it.polito.dp2.NFFG.sol3.jaxb.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

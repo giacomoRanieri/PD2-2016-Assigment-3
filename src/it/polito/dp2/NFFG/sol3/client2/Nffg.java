@@ -1,12 +1,15 @@
-package it.polito.dp2.NFFG.sol3.service.data;
+package it.polito.dp2.NFFG.sol3.client2;
 
 import it.polito.dp2.NFFG.NffgReader;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.NodeReader;
-import it.polito.dp2.NFFG.sol3.service.NffgUtils;
-import it.polito.dp2.NFFG.sol3.jaxb.*;
+import it.polito.dp2.NFFG.sol3.jaxb.LinkType;
+import it.polito.dp2.NFFG.sol3.jaxb.NodeType;
+import it.polito.dp2.NFFG.sol3.jaxb.RestrictedNffgType;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -109,17 +112,4 @@ public class Nffg extends NamedEntity implements NffgReader {
 		return 7 * super.hashCode();
 	}
 
-	public RestrictedNffgType toXMLObject() {
-		ObjectFactory factory = new ObjectFactory();
-		RestrictedNffgType nffg = factory.createRestrictedNffgType();
-		nffg.setName(this.getName());
-		nffg.setUpdateTime(NffgUtils.convertToXMLCalendar(this.getUpdateTime()));
-		RestrictedNffgType.Nodes nodes = factory.createRestrictedNffgTypeNodes();
-		List<NodeType> nodeList = nodes.getNode();
-		for (NodeReader node : this.nodes) {
-			nodeList.add(((Node) node).toXMLObject());
-		}
-		nffg.setNodes(nodes);
-		return nffg;
-	}
 }

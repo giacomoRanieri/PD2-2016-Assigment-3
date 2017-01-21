@@ -32,7 +32,7 @@ import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;
 @Provider
 @Consumes({"application/xml"})
 public class NffgServiceValidatorProvider implements MessageBodyReader<JAXBElement<?>> {
-	private final String jaxbPackage = "it.polito.dp2.NFFG.sol3.service.jaxb";
+	private final String jaxbPackage = "it.polito.dp2.NFFG.sol3.jaxb";
 	private Unmarshaller unmarshaller;
 	private Logger logger;
 

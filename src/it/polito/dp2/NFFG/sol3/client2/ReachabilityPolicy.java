@@ -1,11 +1,9 @@
-package it.polito.dp2.NFFG.sol3.service.data;
+package it.polito.dp2.NFFG.sol3.client2;
 
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.NodeReader;
 import it.polito.dp2.NFFG.ReachabilityPolicyReader;
 import it.polito.dp2.NFFG.sol3.jaxb.EnhancedPolicyType;
-import it.polito.dp2.NFFG.sol3.jaxb.NamedEntityType;
-import it.polito.dp2.NFFG.sol3.jaxb.ObjectFactory;
 
 /**
  * Created by giacomo on 17/01/2017.
@@ -84,24 +82,5 @@ public class ReachabilityPolicy extends Policy implements ReachabilityPolicyRead
 	@Override
 	public int hashCode() {
 		return 13 * super.hashCode();
-	}
-
-	public EnhancedPolicyType toXMLObject() {
-		ObjectFactory factory = new ObjectFactory();
-
-		EnhancedPolicyType policy = factory.createEnhancedPolicyType();
-		policy.setName(this.getName());
-		policy.setNffg(this.getNffg().getName());
-		NamedEntityType source = factory.createNamedEntityType();
-		source.setName(this.source.getName());
-		policy.setSourceNode(source);
-		NamedEntityType destination = factory.createNamedEntityType();
-		destination.setName(this.destination.getName());
-		policy.setDestinationNode(destination);
-		policy.setPositive(this.isPositive());
-		if (this.getResult() != null) {
-			policy.setResult(((VerificationResult) this.getResult()).toXMLObject());
-		}
-		return policy;
 	}
 }

@@ -1,10 +1,7 @@
-package it.polito.dp2.NFFG.sol3.service.data;
+package it.polito.dp2.NFFG.sol3.client2;
 
 import it.polito.dp2.NFFG.PolicyReader;
 import it.polito.dp2.NFFG.VerificationResultReader;
-import it.polito.dp2.NFFG.sol3.service.NffgUtils;
-import it.polito.dp2.NFFG.sol3.jaxb.EnhancedVerificationResultType;
-import it.polito.dp2.NFFG.sol3.jaxb.ObjectFactory;
 import it.polito.dp2.NFFG.sol3.jaxb.VerificationResultType;
 
 import java.util.Calendar;
@@ -96,13 +93,4 @@ public class VerificationResult implements VerificationResultReader {
 		return 23 * super.hashCode();
 	}
 
-	public EnhancedVerificationResultType toXMLObject() {
-		ObjectFactory factory = new ObjectFactory();
-		EnhancedVerificationResultType result = factory.createEnhancedVerificationResultType();
-		result.setPolicy(this.policy.getName());
-		result.setVerificationResult(this.result);
-		result.setVerificationResultMsg(this.message);
-		result.setVerificationTime(NffgUtils.convertToXMLCalendar(this.time));
-		return result;
-	}
 }
