@@ -3,12 +3,10 @@ package it.polito.dp2.NFFG.sol3.service.neo4j;
 import com.sun.jersey.api.client.Client;
 import it.polito.dp2.NFFG.NffgReader;
 import it.polito.dp2.NFFG.PolicyReader;
-import it.polito.dp2.NFFG.lab3.ServiceException;
-import it.polito.dp2.NFFG.sol3.service.data.ReachabilityPolicy;
+import it.polito.dp2.NFFG.sol3.service.ServiceException;
 import it.polito.dp2.NFFG.sol3.service.data.VerificationResult;
 import it.polito.dp2.NFFG.sol3.service.jaxrs.Localhost_Neo4JXMLRest;
 import it.polito.dp2.NFFG.sol3.service.jaxrs.Localhost_Neo4JXMLRest.Resource;
-import scala.util.parsing.combinator.testing.Str;
 
 import javax.ws.rs.WebApplicationException;
 import java.net.URI;

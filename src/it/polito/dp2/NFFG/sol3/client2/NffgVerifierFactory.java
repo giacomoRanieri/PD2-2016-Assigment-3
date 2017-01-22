@@ -4,12 +4,13 @@ import it.polito.dp2.NFFG.NffgReader;
 import it.polito.dp2.NFFG.NffgVerifier;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.PolicyReader;
+import it.polito.dp2.NFFG.sol3.client2.data.Nffg;
+import it.polito.dp2.NFFG.sol3.client2.data.ReachabilityPolicy;
 import it.polito.dp2.NFFG.sol3.jaxb.*;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import java.net.URI;

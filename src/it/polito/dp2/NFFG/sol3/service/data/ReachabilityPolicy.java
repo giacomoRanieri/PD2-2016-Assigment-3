@@ -100,7 +100,7 @@ public class ReachabilityPolicy extends Policy implements ReachabilityPolicyRead
 		policy.setDestinationNode(destination);
 		policy.setPositive(this.isPositive());
 		if (this.getResult() != null) {
-			policy.setResult(((VerificationResult) this.getResult()).toXMLObject());
+			policy.setResult(((VerificationResult) this.getResult()).toXMLObject(false));
 		}
 		return policy;
 	}

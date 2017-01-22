@@ -7,7 +7,7 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import it.polito.dp2.NFFG.NffgReader;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.PolicyReader;
-import it.polito.dp2.NFFG.lab3.ServiceException;
+import it.polito.dp2.NFFG.sol3.service.ServiceException;
 import it.polito.dp2.NFFG.sol3.service.NffgsService;
 import it.polito.dp2.NFFG.sol3.service.data.Nffg;
 import it.polito.dp2.NFFG.sol3.service.data.ReachabilityPolicy;
@@ -74,7 +74,7 @@ public class NffgsResource {
 			logger.log(Level.SEVERE, "Nffg not valid: " + e.getMessage());
 			throw new ForbiddenException("Nffg not valid: " + e.getMessage());
 		} catch (ServiceException | NullPointerException e) {
-			throw new InternalServerErrorException("Unable to load the nffg: "+e.getMessage());
+			throw new InternalServerErrorException("Unable to load the nffg: " + e.getMessage());
 		}
 		return factory.createNffg(((Nffg) newNffg).toXMLObject());
 	}

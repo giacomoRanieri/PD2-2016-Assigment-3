@@ -1,4 +1,4 @@
-package it.polito.dp2.NFFG.sol3.client2;
+package it.polito.dp2.NFFG.sol3.client2.data;
 
 import it.polito.dp2.NFFG.FunctionalType;
 import it.polito.dp2.NFFG.LinkReader;

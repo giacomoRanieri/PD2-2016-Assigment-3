@@ -6,7 +6,7 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.PolicyReader;
-import it.polito.dp2.NFFG.lab3.ServiceException;
+import it.polito.dp2.NFFG.sol3.service.ServiceException;
 import it.polito.dp2.NFFG.sol3.service.NffgsService;
 import it.polito.dp2.NFFG.sol3.service.data.Policy;
 import it.polito.dp2.NFFG.sol3.service.data.ReachabilityPolicy;
@@ -164,7 +164,7 @@ public class PoliciesResource {
 					throw new InternalServerErrorException("Unable to verify the policy");
 				}
 				service.updateVerificationResult(result, (Policy) pol);
-				reslist.add(result.toXMLObject());
+				reslist.add(result.toXMLObject(true));
 			}
 		}
 		return res;
@@ -185,6 +185,6 @@ public class PoliciesResource {
 		VerificationResult res = (VerificationResult) pol.getResult();
 		if (res == null)
 			return null;
-		return factory.createVerificationResult(res.toXMLObject());
+		return factory.createVerificationResult(res.toXMLObject(true));
 	}
 }

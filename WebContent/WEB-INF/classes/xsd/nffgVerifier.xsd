@@ -40,6 +40,10 @@
 				<xs:element name="policy" type="nv:enhancedPolicyType" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
+		<xs:unique name="policyId">
+			<xs:selector xpath="nv:policy"/>
+			<xs:field xpath="@name"/>
+		</xs:unique>
 	</xs:element>
 
 	<xs:complexType name="restrictedNffgType">

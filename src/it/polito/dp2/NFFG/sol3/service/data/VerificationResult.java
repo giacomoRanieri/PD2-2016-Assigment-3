@@ -96,10 +96,11 @@ public class VerificationResult implements VerificationResultReader {
 		return 23 * super.hashCode();
 	}
 
-	public EnhancedVerificationResultType toXMLObject() {
+	public EnhancedVerificationResultType toXMLObject(Boolean setPolicy) {
 		ObjectFactory factory = new ObjectFactory();
 		EnhancedVerificationResultType result = factory.createEnhancedVerificationResultType();
-		result.setPolicy(this.policy.getName());
+		if (setPolicy)
+			result.setPolicy(this.policy.getName());
 		result.setVerificationResult(this.result);
 		result.setVerificationResultMsg(this.message);
 		result.setVerificationTime(NffgUtils.convertToXMLCalendar(this.time));

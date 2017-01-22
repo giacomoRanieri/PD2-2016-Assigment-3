@@ -12,7 +12,6 @@
 	<property name="serviceJaxrsPackage" value="it.polito.dp2.NFFG.sol3.service.jaxrs"/>
 	<property name="serviceJaxrsPath" value="it/polito/dp2/NFFG/sol3/service/jaxrs"/>
 
-	<property name="genericPath.prefix" value="it/polito/dp2/NFFG/lab3"/>
 	<property name="genericJaxb.prefix" value="it/polito/dp2/NFFG/sol3/jaxb"/>
 	<property name="genericJaxbPackage" value="it.polito.dp2.NFFG.sol3.jaxb"/>
 
@@ -23,8 +22,6 @@
 	<!-- The location of the ... web service -->
 	<property name="NEO4JURL" value="http://localhost:${tomcatPort}/Neo4JXML/rest"/>
 	<property name="NEO4JWADL" value="${NEO4JURL}/application.wadl"/>
-
-	<property name="WADL" value="${URL}/application.wadl"/>
 
 	<path id="my.classpath">
 		<fileset dir="${lib.dir}">
@@ -75,6 +72,7 @@
 	</target>
 
 	<target name="build-service" depends="generate-artifacts">
+		<echo message="Compiling service..."/>
 		<javac debug="on"
 			   fork="true"
 			   destdir="${build.dir}"
@@ -83,7 +81,6 @@
 			   target="${target}">
 			<src path="${src.dir}"/>
 			<src path="${gen.dir}"/>
-			<include name="${genericPath.prefix}/**/*.java"/>
 			<include name="${genericJaxb.prefix}/**/*.java"/>
 			<include name="${servicePath.prefix}/**/*.java"/>
 			<classpath>
@@ -93,6 +90,7 @@
 	</target>
 
 	<target name="build-client" depends="generate-bindings">
+		<echo message="Compiling Client1..."/>
 		<javac debug="on"
 			   fork="true"
 			   destdir="${build.dir}"
@@ -101,13 +99,13 @@
 			   target="${target}">
 			<src path="${src.dir}"/>
 			<src path="${gen.dir}"/>
-			<include name="${genericPath.prefix}/**/*.java"/>
 			<include name="${genericJaxb.prefix}/**/*.java"/>
 			<include name="${client1Path.prefix}/**/*.java"/>
 			<classpath>
 				<path refid="my.classpath"/>
 			</classpath>
 		</javac>
+		<echo message="Compiling Client2..."/>
 		<javac debug="on"
 			   fork="true"
 			   destdir="${build.dir}"
@@ -116,7 +114,6 @@
 			   target="${target}">
 			<src path="${src.dir}"/>
 			<src path="${gen.dir}"/>
-			<include name="${genericPath.prefix}/**/*.java"/>
 			<include name="${genericJaxb.prefix}/**/*.java"/>
 			<include name="${client2Path.prefix}/**/*.java"/>
 			<classpath>

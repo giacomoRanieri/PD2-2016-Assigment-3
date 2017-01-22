@@ -4,12 +4,10 @@ import it.polito.dp2.NFFG.NffgReader;
 import it.polito.dp2.NFFG.NffgVerifierException;
 import it.polito.dp2.NFFG.PolicyReader;
 import it.polito.dp2.NFFG.VerificationResultReader;
-import it.polito.dp2.NFFG.lab3.ServiceException;
 import it.polito.dp2.NFFG.sol3.service.data.*;
 import it.polito.dp2.NFFG.sol3.jaxb.EnhancedPolicyType;
 import it.polito.dp2.NFFG.sol3.jaxb.RestrictedNffgType;
 import it.polito.dp2.NFFG.sol3.service.neo4j.Neo4JService;
-
 import java.util.Set;
 
 /**
